@@ -1,0 +1,19 @@
+name: Release
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm test
+      - run: npm run build
+      - run: gh release create "$(node -p "require('./manifest.json').version")" main.js manifest.json --target "$GITHUB_SHA" --title "SolMarrow for Obsidian" --notes "Send a note or selection to SolMarrow as a draft."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
