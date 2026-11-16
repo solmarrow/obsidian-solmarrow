@@ -6,7 +6,7 @@ const DEFAULTS: Settings = { apiKey: '', workspaceId: '' };
 // Only called when the user runs a command. Sends the text to app.solmarrow.com and nowhere else.
 const request: Requester = async (req) => {
   const r = await requestUrl({ url: req.url, method: req.method, headers: req.headers, body: req.body, throw: false });
-  let json: any = null;
+  let json: unknown = null;
   try {
     json = r.json;
   } catch {
