@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -11,9 +13,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+      - run: npm ci
       - run: npm test
       - run: npm run build
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: main.js
       - run: |
           VER=$(node -p "require('./manifest.json').version")
           gh release create "$VER" main.js manifest.json --target "$GITHUB_SHA" --title "SolMarrow $VER" --notes "Send a note or selection to SolMarrow as a draft."
