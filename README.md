@@ -4,9 +4,9 @@ Send a note, or just the text you selected, from Obsidian to [SolMarrow](https:/
 
 ## Use it
 
-1. In SolMarrow open **Settings → API keys** and create a key (it starts with `smk_`). Copy the workspace ID too.
+1. In SolMarrow open **Settings → API keys** and create a key (it starts with `smk_`). Note the workspace ID of the workspace you want drafts to go to (36 characters).
 2. In Obsidian open **Settings → SolMarrow** and paste the key and the workspace ID.
-3. Open a note (select some text if you only want part of it), run the command **Send note or selection to SolMarrow as a draft**.
+3. Open a note (select some text if you only want part of it), run the command **Send note or selection as a draft**.
 
 With no selection the whole note is sent, without its properties (front matter).
 
@@ -25,7 +25,7 @@ Copy `main.js` and `manifest.json` from a release into `<vault>/.obsidian/plugin
 ## Build
 
 ```
-npm install
+npm ci
 npm test
 npm run build
 ```
