@@ -10,7 +10,7 @@ export interface HttpRequest {
 }
 export interface HttpResponse {
   status: number;
-  json: any;
+  json: unknown;
 }
 export type Requester = (req: HttpRequest) => Promise<HttpResponse>;
 
@@ -42,6 +42,16 @@ export function settingsProblem(s: Settings): string | null {
   return null;
 }
 
+/** Reads a nested string field from an unknown JSON value. */
+function pick(value: unknown, ...path: string[]): string | null {
+  let cur: unknown = value;
+  for (const key of path) {
+    if (typeof cur !== 'object' || cur === null) return null;
+    cur = (cur as Record<string, unknown>)[key];
+  }
+  return typeof cur === 'string' || typeof cur === 'number' ? String(cur) : null;
+}
+
 export function buildDraftBody(text: string) {
   return { text, account_ids: [] as string[], media_ids: [] as string[], draft: true };
 }
@@ -68,10 +78,10 @@ export async function createDraft(request: Requester, s: Settings, text: string,
   if (res.status === 401) throw new Error('SolMarrow did not accept the API key. Check the key in the plugin settings.');
   if (res.status === 403 || res.status === 404) throw new Error('SolMarrow could not find that workspace for this key. Check the workspace ID.');
   if (res.status < 200 || res.status >= 300) {
-    const msg = res.json && res.json.error && res.json.error.message;
+    const msg = pick(res.json, 'error', 'message');
     throw new Error(`SolMarrow said (${res.status}): ${msg || 'no details'}`);
   }
-  const id = res.json && (res.json.post_id || res.json.id);
+  const id = pick(res.json, 'post_id') || pick(res.json, 'id');
   if (!id) throw new Error('SolMarrow saved the draft but did not return its ID.');
   return { postId: String(id) };
 }
