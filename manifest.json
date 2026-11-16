@@ -1,0 +1,10 @@
+{
+  "id": "solmarrow",
+  "name": "SolMarrow",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "Send a note or the selected text to SolMarrow as a social media draft.",
+  "author": "SolMarrow",
+  "authorUrl": "https://solmarrow.com",
+  "isDesktopOnly": false
+}
