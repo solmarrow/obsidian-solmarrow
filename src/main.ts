@@ -22,8 +22,8 @@ export default class SolMarrowPlugin extends Plugin {
     await this.loadSettings();
 
     this.addCommand({
-      id: 'send-to-solmarrow-draft',
-      name: 'Send note or selection to SolMarrow as a draft',
+      id: 'send-draft',
+      name: 'Send note or selection as a draft',
       editorCallback: (editor: Editor, ctx: MarkdownView | MarkdownFileInfo) => this.send(editor, ctx),
     });
 
@@ -68,9 +68,8 @@ class SolMarrowSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
-    new Setting(containerEl).setName('SolMarrow').setHeading();
     containerEl.createEl('p', {
-      text: 'The command "Send note or selection to SolMarrow as a draft" sends the selected text (or the whole note, without its properties) to app.solmarrow.com. It only runs when you run it. Nothing else is sent anywhere, and the plugin has no telemetry.',
+      text: 'The command "Send note or selection as a draft" sends the selected text (or the whole note, without its properties) to app.solmarrow.com. It only runs when you run it. Nothing else is sent anywhere, and the plugin has no telemetry.',
     });
 
     new Setting(containerEl)
@@ -88,7 +87,7 @@ class SolMarrowSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName('Workspace ID')
-      .setDesc('The workspace the key belongs to. SolMarrow shows it next to the key.')
+      .setDesc('The ID of the workspace the key belongs to (36 characters).')
       .addText((t) =>
         t
           .setPlaceholder('00000000-0000-0000-0000-000000000000')
